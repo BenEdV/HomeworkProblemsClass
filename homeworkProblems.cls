@@ -16,12 +16,6 @@
 \usepackage{graphicx} % Required to insert images
 \usepackage{listings} % Required for insertion of code
 \usepackage{courier} % Required for the courier font
-\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{tikz}
-\usepackage{qtree}
-\usepackage{mathtools}
 
 % Margins
 \topmargin=-0.45in
@@ -109,7 +103,7 @@
 \newcounter{homeworkSectionCounter}
 
 \newcommand{\homeworkProblemName}{}
-\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\newenvironment{homeworkProblem}[1][\@problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
 \stepcounter{homeworkProblemCounter} % Increase counter for number of problems
 \setcounter{homeworkSectionCounter}{0}
 \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
@@ -145,7 +139,7 @@
 \title{
 \vspace{2in}
 \textmd{\textbf{\@hmwkClass:\ \@hmwkTitle}}\\
-\normalsize\vspace{0.1in}\small{Due\ on\ \@hmwkDueDate}\\
+\normalsize\vspace{0.1in}\small{\@dueOn\@hmwkDueDate}\\
 \vspace{0.1in}\large{\textit{\@hmwkClassInstructor}}
 \vspace{3in}
 }
@@ -160,6 +154,25 @@
 \def\hmwkClassInstructor#1{\def\@hmwkClassInstructor{#1}}
 \def\hmwkAuthorName#1{\def\@hmwkAuthorName{#1}}
 \def\hmwkAuthorID#1{\def\@hmwkAuthorID{#1}}
+
+\newcommand{\@dueOn}{Due\ on\ }
+\newcommand{\@problem}{Problem\ }
+
+\AtBeginDocument{
+	\@ifpackagewith{babel}{dutch}{%
+    	\renewcommand{\@dueOn}{In\ te\ leveren\ op\ }%
+		\renewcommand{\@problem}{Opgave\ }%
+		\rfoot{Pagina\ \thepage\ van\ \protect\pageref{LastPage}} % Bottom right footer
+		\renewcommand{\enterProblemHeader}[1]{
+		\nobreak\extramarks{#1}{#1 vervolgd op volgende pagina\ldots}\nobreak
+		\nobreak\extramarks{#1 (vervolgd)}{#1 vervolgd op volgende pagina\ldots}\nobreak
+		}
+		\renewcommand{\exitProblemHeader}[1]{
+		\nobreak\extramarks{#1 (vervolgd)}{#1 vervolgd op volgende pagina\ldots}\nobreak
+		\nobreak\extramarks{#1}{}\nobreak
+		}
+  	}{}
+ }
 %----------------------------------------------------------------------------------------
 
 %----------------------------------------------------------------------%
