@@ -104,7 +104,7 @@
 \newcommand{\homeworkProblemName}{}
 \newenvironment{homeworkProblem}[1][\@problem{\arabic{homeworkProblemCounter}}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
 \stepcounter{homeworkProblemCounter} % Increase counter for number of problems
-\setcounter{homeworkSectionCounter}{0}
+\setcounter{homeworkSectionCounter}{0} % Reset the section counter
 \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
 \section{\homeworkProblemName} % Make a section in the document with the custom problem count
 \enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
@@ -117,7 +117,7 @@
 }
 
 \newcommand{\homeworkSectionName}{}
-\newenvironment{homeworkSection}[1][(\alph{homeworkSectionCounter})]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
+\newenvironment{homeworkSection}[1][(\alph{homeworkSectionCounter})]{ % New environment for sections within homework problems, takes 1 argument - the name of the section with the default (a) alphabetic
 \stepcounter{homeworkSectionCounter}
 \renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the name of the section from the environment argument
 \subsection{\homeworkSectionName} % Make a subsection with the custom name of the subsection
