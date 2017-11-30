@@ -34,7 +34,7 @@
 \rhead{\@hmwkAuthorID} %\firstxmark} % Top right header
 \lfoot{\lastxmark} % Bottom left footer
 \cfoot{} % Bottom center footer
-\rfoot{Page\ \thepage\ of\ \protect\pageref{LastPage}} % Bottom right footer
+\rfoot{\@rfooter{\thepage}{\protect\pageref{LastPage}}} % Bottom right footer
 \renewcommand\headrulewidth{0.4pt} % Size of the header rule
 \renewcommand\footrulewidth{0.4pt} % Size of the footer rule
 
@@ -83,18 +83,17 @@
 
 %----------------------------------------------------------------------------------------
 %	DOCUMENT STRUCTURE COMMANDS
-%	Skip this unless you know what you're doing
 %----------------------------------------------------------------------------------------
 
 % Header and footer for when a page split occurs within a problem environment
 \newcommand{\enterProblemHeader}[1]{
-\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
-\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{\@continuednp{#1}}\nobreak
+\nobreak\extramarks{#1 (\@continued)}{\@continuednp{#1}}\nobreak
 }
 
 % Header and footer for when a page split occurs between problem environments
 \newcommand{\exitProblemHeader}[1]{
-\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (\@continued)}{\@continuednp{#1}}\nobreak
 \nobreak\extramarks{#1}{}\nobreak
 }
 
@@ -103,7 +102,7 @@
 \newcounter{homeworkSectionCounter}
 
 \newcommand{\homeworkProblemName}{}
-\newenvironment{homeworkProblem}[1][\@problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\newenvironment{homeworkProblem}[1][\@problem{\arabic{homeworkProblemCounter}}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
 \stepcounter{homeworkProblemCounter} % Increase counter for number of problems
 \setcounter{homeworkSectionCounter}{0}
 \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
@@ -128,18 +127,13 @@
 }
 
 %----------------------------------------------------------------------------------------
-%	NAME AND CLASS SECTION
-%----------------------------------------------------------------------------------------
-
-
-%----------------------------------------------------------------------------------------
 %	TITLE PAGE
 %----------------------------------------------------------------------------------------
 
 \title{
 \vspace{2in}
 \textmd{\textbf{\@hmwkClass:\ \@hmwkTitle}}\\
-\normalsize\vspace{0.1in}\small{\@dueOn\@hmwkDueDate}\\
+\normalsize\vspace{0.1in}\small{\@dueOn{\@hmwkDueDate}}\\
 \vspace{0.1in}\large{\textit{\@hmwkClassInstructor}}
 \vspace{3in}
 }
@@ -147,6 +141,10 @@
 \author{\textbf{\@hmwkAuthorName}}
 \date{} % Insert date here if you want it to appear below your name
 
+%----------------------------------------------------------------------------------------
+%	USER DEFINITIONS
+%	These are to filled in the tex file, see example.tex
+%----------------------------------------------------------------------------------------
 
 \def\hmwkTitle#1{\def\@hmwkTitle{#1}}
 \def\hmwkDueDate#1{\def\@hmwkDueDate{#1}}
@@ -155,24 +153,26 @@
 \def\hmwkAuthorName#1{\def\@hmwkAuthorName{#1}}
 \def\hmwkAuthorID#1{\def\@hmwkAuthorID{#1}}
 
-\newcommand{\@dueOn}{Due\ on\ }
-\newcommand{\@problem}{Problem\ }
+%----------------------------------------------------------------------------------------
+%	INTERNATIONALIZATION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\@dueOn}[1]{Due\ on\ #1}
+\newcommand{\@problem}[1]{Problem\ #1}
+\newcommand{\@rfooter}[2]{Page\ #1\ of\ #2}
+\newcommand{\@continued}{(continued)}
+\newcommand{\@continuednp}[1]{#1 continued on next page\ldots}
 
 \AtBeginDocument{
 	\@ifpackagewith{babel}{dutch}{%
-    	\renewcommand{\@dueOn}{In\ te\ leveren\ op\ }%
-		\renewcommand{\@problem}{Opgave\ }%
-		\rfoot{Pagina\ \thepage\ van\ \protect\pageref{LastPage}} % Bottom right footer
-		\renewcommand{\enterProblemHeader}[1]{
-		\nobreak\extramarks{#1}{#1 vervolgd op volgende pagina\ldots}\nobreak
-		\nobreak\extramarks{#1 (vervolgd)}{#1 vervolgd op volgende pagina\ldots}\nobreak
-		}
-		\renewcommand{\exitProblemHeader}[1]{
-		\nobreak\extramarks{#1 (vervolgd)}{#1 vervolgd op volgende pagina\ldots}\nobreak
-		\nobreak\extramarks{#1}{}\nobreak
-		}
+    	\renewcommand{\@dueOn}[1]{In\ te\ leveren\ op\ #1}%
+		\renewcommand{\@problem}[1]{Opgave\ #1}%
+		\renewcommand{\@rfooter}[2]{Pagina\ #1\ van\ #2}%
+		\renewcommand{\@continued}{(vervolgd)}%
+		\renewcommand{\@continuednp}[1]{#1 vervolgd op volgende pagina\ldots}%
   	}{}
- }
+}
+
 %----------------------------------------------------------------------------------------
 
 %----------------------------------------------------------------------%
