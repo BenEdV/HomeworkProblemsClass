@@ -52,7 +52,7 @@
         keywordstyle=[1]\color{Blue}\bf, % Perl functions bold and blue
         keywordstyle=[2]\color{Purple}, % Perl function arguments purple
         keywordstyle=[3]\color{Blue}\underbar, % Custom functions underlined and blue
-        identifierstyle=, % Nothing special about identifiers                                         
+        identifierstyle=, % Nothing special about identifiers
         commentstyle=\usefont{T1}{pcr}{m}{sl}\color{MyDarkGreen}\small, % Comments small dark green courier font
         stringstyle=\color{Purple}, % Strings are purple
         showstringspaces=false, % Don't put marks in string spaces
@@ -100,9 +100,10 @@
 \setcounter{secnumdepth}{0} % Removes default section numbers
 \newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
 \newcounter{homeworkSectionCounter}
+\newcounter{homeworkSubSectionCounter}
 
 \newcommand{\homeworkProblemName}{}
-\newenvironment{homeworkProblem}[1][\@problem{\arabic{homeworkProblemCounter}}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\newenvironment{homeworkProblem}[1][\@problem{\@hmwkLevel{homeworkProblemCounter}}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
 \stepcounter{homeworkProblemCounter} % Increase counter for number of problems
 \setcounter{homeworkSectionCounter}{0} % Reset the section counter
 \renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
@@ -117,13 +118,24 @@
 }
 
 \newcommand{\homeworkSectionName}{}
-\newenvironment{homeworkSection}[1][(\alph{homeworkSectionCounter})]{ % New environment for sections within homework problems, takes 1 argument - the name of the section with the default (a) alphabetic
+\newenvironment{homeworkSection}[1][(\@hmwkLevelSub{homeworkSectionCounter})]{ % New environment for sections within homework problems, takes 1 argument - the name of the section with the default (a) alphabetic
 \stepcounter{homeworkSectionCounter}
+\setcounter{homeworkSubSectionCounter}{0}
 \renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the name of the section from the environment argument
 \subsection{\homeworkSectionName} % Make a subsection with the custom name of the subsection
 \enterProblemHeader{\homeworkProblemName\ \homeworkSectionName} % Header and footer within the environment
 }{
 \enterProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+
+\newcommand{\homeworkSubSectionName}{}
+\newenvironment{homeworkSubSection}[1][(\@hmwkLevelSubSub{homeworkSubSectionCounter})]{ % New environment for subsections within homework problems, takes 1 argument - the name of the section with the default (1) numeric
+\stepcounter{homeworkSubSectionCounter}
+\renewcommand{\homeworkSubSectionName}{#1} % Assign \homeworkSubSectionName to the name of the subsection from the environment argument
+\subsubsection{\homeworkSubSectionName} % Make a subsubsection with the custom name of the subsubsection
+\enterProblemHeader{\homeworkProblemName\ \homeworkSectionName\ \homeworkSubSectionName} % Header and footer within the environment
+}{
+\enterProblemHeader{\homeworkProblemName\ \homeworkSectionName} % Header and footer after the environment
 }
 
 %----------------------------------------------------------------------------------------
@@ -143,8 +155,12 @@
 
 %----------------------------------------------------------------------------------------
 %	USER DEFINITIONS
-%	These are to filled in the tex file, see example.tex
+%	These are to be filled in the tex file, see example.tex
 %----------------------------------------------------------------------------------------
+% Defaults
+\def\@hmwkLevel{\arabic}
+\def\@hmwkLevelSub{\alph}
+\def\@hmwkLevelSubSub{\arabic}
 
 \def\hmwkTitle#1{\def\@hmwkTitle{#1}}
 \def\hmwkDueDate#1{\def\@hmwkDueDate{#1}}
@@ -152,13 +168,17 @@
 \def\hmwkClassInstructor#1{\def\@hmwkClassInstructor{#1}}
 \def\hmwkAuthorName#1{\def\@hmwkAuthorName{#1}}
 \def\hmwkAuthorID#1{\def\@hmwkAuthorID{#1}}
+% Styling of exercise listing
+\def\hmwkLevel#1{\def\@hmwkLevel{#1}}
+\def\hmwkLevelSub#1{\def\@hmwkLevelSub{#1}}
+\def\hmwkLevelSubSub#1{\def\@hmwkLevelSubSub{#1}}
 
 %----------------------------------------------------------------------------------------
 %	INTERNATIONALIZATION
 %----------------------------------------------------------------------------------------
 
 \newcommand{\@dueOn}[1]{Due\ on\ #1}
-\newcommand{\@problem}[1]{Problem\ #1}
+\newcommand{\@problem}[1]{Exercise\ #1}
 \newcommand{\@rfooter}[2]{Page\ #1\ of\ #2}
 \newcommand{\@continued}{(continued)}
 \newcommand{\@continuednp}[1]{#1 continued on next page\ldots}
